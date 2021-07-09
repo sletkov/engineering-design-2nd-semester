@@ -1,0 +1,17 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Задать вопрос
+{% endblock %}
+
+{% block content %}
+    <h1>Задать вопрос</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{form.title}}<br>
+        {{form.describe}}<br>
+        <button type="submit" class="btn btn-success">Задать вопрос</button>
+        <span>{{ error }}</span>
+    </form>
+{% endblock %}

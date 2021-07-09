@@ -1,0 +1,38 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Отзывы
+{% endblock %}
+
+{% block content %}
+
+    <h1>Отзывы</h1>
+    <p>Здесь вы можете поделиться впечатлением о ресурсе</p>
+    <a class="skip-link" href="#add_feedback">Оставить отзыв</a>
+    <p>1{{ feedback_count }}</p>
+    {% if feedbacks %}
+        {% for feedback in feedbacks %}
+        <div class="alert alert-success mt-2">
+        <h2>{{feedback.title}}</h2>
+        <p>{{feedback.describe }}</p>
+            <p>Оценка: {{feedback.mark}}/10</p>
+            <p>Дата: {{feedback.date}}</p>
+
+        </div>
+
+        {% endfor %}
+    {%else%}
+    <p>Нет отзывов</p>
+    {% endif %}
+
+    <h2 id="add_feedback">Оставьте отзыв</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{form.title}}<br>
+        {{form.describe}}<br>
+        {{form.mark}}<br>
+        <button type="submit" class="btn btn-success">Оставить отзыв</button>
+        <span>{{ error }}</span>
+    </form>
+
+{% endblock %}

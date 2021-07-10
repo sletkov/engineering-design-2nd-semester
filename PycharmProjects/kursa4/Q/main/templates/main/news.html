@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Новости
+{% endblock %}
+
+{% block content %}
+
+    <h1 >Новости</h1>
+    <p>Следите за актуальными новостями</p>
+
+    {% if news %}
+    <p class="">Всего {{news_count}} новостей</p>
+    {% for new in news %}
+    <div class="alert alert-warning mt-2">
+    <h2>{{new.title}}</h2>
+    <p>{{new.describe}}</p>
+    </div>
+    {% endfor %}
+
+    {%else%}
+    <p class="mt-3">Нет Новостей</p>
+
+    {% endif %}
+
+{% endblock %}

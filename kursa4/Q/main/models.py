@@ -1,8 +1,44 @@
 import datetime
 
 from django.db import models
+from django.urls import reverse
+
+def get_models_for_count(*model_names):
+    return [models.Count(model_name) for model_name in model_names]
+
+class CategoryManager(models.Manager):
+
+    CATEGORY_NAME_COUNT_NAME = {
+        'Ноутбуки': 'notebook__count',
+        'Смартфоны': 'smartphone__count'
+    }
+
+    def get_queryset(self):
+        return super().get_queryset()
+
+    def get_categories_for_left_sidebar(self):
+        models = get_models_for_count('notebook', 'smartphone')
+        qs = list(self.get_queryset().annotate(*models))
+        data = [
+            dict(name=c.name, url=c.get_absolute_url, count= getattr(c,self.CATEGORY_NAME_COUNT_NAME[c.name]))
+            for c in qs
+        ]
+        return data
 
 
+
+
+class Category(models.Model):
+
+    name = models.CharField(max_length=255, verbose_name='Название категории')
+    slug = models.SlugField(unique=True)
+    objects = CategoryManager()
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('category_detail', kwargs={'slug':self.slug})
 
 
 class Question(models.Model):
